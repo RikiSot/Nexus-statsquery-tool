@@ -56,7 +56,7 @@ class NexusGUI():
         return path[0][0]
 
     def show_message_done(self):
-        eg.show_message('Done. The program will close')
+        eg.show_message('Copied to clipboard. The program will close')
 
     def choose_vble(self, names):
         reply = eg.get_choice(title=self.title, message='Multiple names found. Select one',

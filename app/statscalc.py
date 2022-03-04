@@ -1,10 +1,12 @@
 import platform
 import pyperclip
 
+
 class StatsData():
     """
     A class to perform statistics for Nexus
     """
+
     def __init__(self, df, driver_id, tag_id, start_date, end_date):
         """
         Defines the necessary parameters for calculations
@@ -32,16 +34,15 @@ class StatsData():
         self.df_statsday = df_year['value'].resample('D').agg(['min', 'max', 'mean', 'std', 'sum', 'last'])
         self.df_statsday = self.df_statsday.fillna('NULL')
         self.df_statsday['query'] = 'insert into `statsdata_day_' + self.df_statsday.index.strftime('%Y') + \
-                           '` (`DriverId`, `TagId`, `TS`, `MinVal`, `MaxVal`, `AvgVal`, `StdDevVal`, `SumVal`, `LastValueVal`)' \
-                           ' values (' + str(self.driver_id) + ',' + str(self.tag_id) + ",\'" + \
-                                self.df_statsday.index.strftime('%Y-%m-%d %H:%M:%S') + "\'," + \
-                                self.df_statsday['min'].map('{:.5f}'.format) + ',' + \
-                                self.df_statsday['max'].map('{:.5f}'.format) + ',' + \
-                                self.df_statsday['mean'].map('{:.5f}'.format) + ',' + \
-                                self.df_statsday['std'].map('{}'.format) + ',' + \
-                                self.df_statsday['sum'].map('{:.5f}'.format) + ',' + \
-                                self.df_statsday['last'].map('{:.5f}'.format) + ');'
-
+                                    '` (`DriverId`, `TagId`, `TS`, `MinVal`, `MaxVal`, `AvgVal`, `StdDevVal`, `SumVal`, `LastValueVal`)' \
+                                    ' values (' + str(self.driver_id) + ',' + str(self.tag_id) + ",\'" + \
+                                    self.df_statsday.index.strftime('%Y-%m-%d %H:%M:%S') + "\'," + \
+                                    self.df_statsday['min'].map('{:.5f}'.format) + ',' + \
+                                    self.df_statsday['max'].map('{:.5f}'.format) + ',' + \
+                                    self.df_statsday['mean'].map('{:.5f}'.format) + ',' + \
+                                    self.df_statsday['std'].map(lambda x: x if x == 'NULL' else '{:.5f}'.format(x)) + ',' + \
+                                    self.df_statsday['sum'].map('{:.5f}'.format) + ',' + \
+                                    self.df_statsday['last'].map('{:.5f}'.format) + ');'
 
     def statsmonth(self):
         df_year = self.df[self.mask]
@@ -49,16 +50,15 @@ class StatsData():
         self.df_statsmonth = df_year['value'].resample('M').agg(['min', 'max', 'mean', 'std', 'sum', 'last'])
         self.df_statsmonth = self.df_statsmonth.fillna('NULL')
         self.df_statsmonth['query'] = 'insert into `statsdata_month_' + self.df_statsmonth.index.strftime('%Y') + \
-                           '` (`DriverId`, `TagId`, `TS`, `MinVal`, `MaxVal`, `AvgVal`, `StdDevVal`, `SumVal`, `LastValueVal`)' \
-                           ' values (' + str(self.driver_id) + ',' + str(self.tag_id) + ",\'" + \
-                           self.df_statsmonth.index.strftime('%Y-%m-%d %H:%M:%S') + "\'," + \
-                           self.df_statsmonth['min'].map('{:.5f}'.format) + ',' + \
-                           self.df_statsmonth['max'].map('{:.5f}'.format) + ',' + \
-                           self.df_statsmonth['mean'].map('{:.5f}'.format) + ',' + \
-                           self.df_statsmonth['std'].map('{}'.format) + ',' + \
-                           self.df_statsmonth['sum'].map('{:.5f}'.format) + ',' + \
-                           self.df_statsmonth['last'].map('{:.5f}'.format) + ');'
-
+                                      '` (`DriverId`, `TagId`, `TS`, `MinVal`, `MaxVal`, `AvgVal`, `StdDevVal`, `SumVal`, `LastValueVal`)' \
+                                      ' values (' + str(self.driver_id) + ',' + str(self.tag_id) + ",\'" + \
+                                      self.df_statsmonth.index.strftime('%Y-%m-%d %H:%M:%S') + "\'," + \
+                                      self.df_statsmonth['min'].map('{:.5f}'.format) + ',' + \
+                                      self.df_statsmonth['max'].map('{:.5f}'.format) + ',' + \
+                                      self.df_statsmonth['mean'].map('{:.5f}'.format) + ',' + \
+                                      self.df_statsmonth['std'].map(lambda x: x if x == 'NULL' else '{:.5f}'.format(x)) + ',' + \
+                                      self.df_statsmonth['sum'].map('{:.5f}'.format) + ',' + \
+                                      self.df_statsmonth['last'].map('{:.5f}'.format) + ');'
 
     def print_queries(self):
         day_query = self.df_statsday['query'].to_list()
@@ -69,7 +69,6 @@ class StatsData():
         full_query = '\n'.join(full_query)
         print(full_query)
 
-
     def copy_queries(self):
         day_query = self.df_statsday['query'].to_list()
         day_query = '\n'.join(day_query)
@@ -78,4 +77,3 @@ class StatsData():
         full_query = [day_query, month_query]
         full_query = '\n'.join(full_query)
         pyperclip.copy(full_query)
-
