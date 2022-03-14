@@ -1,0 +1,6 @@
+pandas
+cs20-easygui==0.9.5
+easygui-qt==0.9.3
+openpyxl==3.0.9
+PyQt5
+pyperclip
