@@ -6,7 +6,7 @@ Para hacer funcionar el programa primero hay que instalar las librerías necesar
 pip install -r requirements.txt 
 ```
 
-Una vez instaladas, se puede ejecutar el script desde consola. La ruta debe ser /
+Una vez instaladas, se puede ejecutar el script desde consola. La ruta de ejecución debe ser /src
 ```
 python main.py
 ```
@@ -17,3 +17,5 @@ python main.py
   <li>Introduce la fecha de inicio y la fecha de fin</li>
   <li>El resultado de la query se copia en el portapapeles</li>
   </ul>
+
+
